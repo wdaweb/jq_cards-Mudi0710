@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Squid Game</title>
+  <style>
+    /* 重置預設 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* 設定body長寬與背景圖 */
+    body {
+      width: 100vw;
+      height: 100vh;
+      background: url('./images/background.jpg') no-repeat center center/cover;
+    }
+
+    /* 設定遊戲操作區 */
+    #container {
+      width: 1600px;
+      height: 900px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* 設定中間資訊區 */
+    #info {
+      width: 1600px;
+      height: 420px;
+      position: relative;
+    }
+
+    /* 設定汗滴與動畫影格 */
+    .sweat {
+      position: absolute;
+      top: 50%;
+      left: 4%;
+      animation: sweat 5s linear infinite;
+    }
+
+    @keyframes sweat {
+      0% {
+        opacity: 0;
+      }
+
+      25% {
+        transform: translateY(100%);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(100%);
+      }
+    }
+
+    /* 設定OS與動畫影格 */
+    .cloud-left {
+      position: absolute;
+      top: 6%;
+      left: 10.8%;
+      animation: cloud 5s linear infinite;
+    }
+
+    .cloud-right {
+      position: absolute;
+      top: 6%;
+      right: 9.4%;
+      animation: cloud 5s 3s linear infinite;
+    }
+
+    @keyframes cloud {
+      0% {
+        opacity: 0;
+      }
+
+      25% {
+        transform: translateY(-10%);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-10%);
+      }
+    }
+
+    /* 設定苦惱線與動畫影格 */
+    .messline {
+      position: absolute;
+      top: 43.5%;
+      right: 3.3%;
+      animation: messline 0.5s linear infinite;
+    }
+
+    @keyframes messline {
+      50% {
+        transform: rotate(-10deg);
+        opacity: 1;
+      }
+    }
+
+    /* 設定上方卡片區 */
+    #shape-cards {
+      width: 1600px;
+      height: 240px;
+      background: blue;
+    }
+
+    /* 設定下方卡片區 */
+    #name-cards {
+      width: 1600px;
+      height: 240px;
+      background: red;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div id="shape-cards"></div>
+    <div id="info">
+      <img src="./images/title.png" alt="title">
+      <img class="sweat" src="./images/sweat.png" alt="sweat">
+      <img class="cloud-left" src="./images/cloud-left.png" alt="cloud-left">
+      <img class="cloud-right" src="./images/cloud-right.png" alt="cloud-right">
+      <img class="messline" src="./images/messline.png" alt="messline">
+    </div>
+    <div id="name-cards"></div>
+  </div>
+
+</body>
+
+</html>
