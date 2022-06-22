@@ -38,6 +38,21 @@
       position: relative;
     }
 
+    .info {
+      position: absolute;
+      animation: info 1.5s linear;
+    }
+
+    @keyframes info {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
     /* 設定汗滴與動畫影格 */
     .sweat {
       position: absolute;
@@ -106,7 +121,7 @@
       }
     }
 
-    /* 設定上下方卡片區 */
+    /* 設定上下排卡片區 */
     #top-cards,
     #bottom-cards {
       width: 1600px;
@@ -116,6 +131,7 @@
       align-items: center;
     }
 
+    /* 設定上下排卡片樣式 */
     .shape-card,
     .name-card {
       width: 180px;
@@ -125,8 +141,8 @@
       transition: transform 1s;
     }
 
-    .front-shape,
-    .front-name {
+    /* 設定上下排卡片正面樣式 */
+    .card-front {
       width: 100%;
       height: 100%;
       position: absolute;
@@ -136,6 +152,7 @@
       backface-visibility: hidden;
     }
 
+    /* 設定上排卡片背面樣式 */
     .back-shape {
       width: 100%;
       height: 100%;
@@ -145,6 +162,7 @@
       backface-visibility: hidden;
     }
 
+    /* 設定下排卡片背面樣式 */
     .back-name {
       width: 100%;
       height: 100%;
@@ -152,6 +170,11 @@
       position: absolute;
       /* 翻過來後隱藏另一面 */
       backface-visibility: hidden;
+    }
+
+    /* 設定翻開卡片的變形樣式 */
+    .card-open {
+      transform: rotateY(180deg);
     }
   </style>
 </head>
@@ -161,20 +184,21 @@
     <div id="top-cards"></div>
     <div id="info">
       <img src="./images/title.png" alt="title">
-      <img class="sweat" src="./images/sweat.png" alt="sweat">
-      <img class="cloud-left" src="./images/cloud-left.png" alt="cloud-left">
-      <img class="cloud-right" src="./images/cloud-right.png" alt="cloud-right">
-      <img class="messline" src="./images/messline.png" alt="messline">
+      <img sweat" src="./images/sweat.png" alt="sweat">
+      <img cloud-left" src="./images/cloud-left.png" alt="cloud-left">
+      <img cloud-right" src="./images/cloud-right.png" alt="cloud-right">
+      <img messline" src="./images/messline.png" alt="messline">
     </div>
     <div id="bottom-cards"></div>
   </div>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     // 產生上排 7 張卡片
     for (let i = 0; i < 7; i++) {
       $("#top-cards").append(`
         <div class="shape-card">
-          <div class="front-shape"></div>
+          <div class="card-front"></div>
           <div class="back-shape"></div>
         </div>
       `)
@@ -184,7 +208,7 @@
     for (let i = 0; i < 7; i++) {
       $("#bottom-cards").append(`
         <div class="name-card">
-          <div class="front-name"></div>
+          <div class="card-front"></div>
           <div class="back-name"></div>
         </div>
       `)
@@ -194,8 +218,8 @@
     for (let i = 0; i < 7; i++) {
       const num = i % 7 + 1
       // 加入上排正面花色
-      $(".shape-card").eq(i).find(".front-shape").css("background-image", `url(./images/front_shape${num}.png)`)
-      $(".shape-card").eq(i).attr("data-card", num)
+      $(".shape-card").eq(i).find(".card-front").css("background-image", `url(./images/front_shape${num}.png)`)
+      $(".shape-card").eq(i).attr("data-topcard", num)
 
       // 打散上排卡片順序
       const target = Math.round(Math.random() * 6)
@@ -204,15 +228,108 @@
 
     // 將下排卡片加入正面花色與打散順序
     for (let i = 0; i < 7; i++) {
-      const num = i % 7 + 1
+      const num2 = i % 7 + 1
       // 加入下排正面花色
-      $(".name-card").eq(i).find(".front-name").css("background-image", `url(./images/front_name${num}.png)`)
-      $(".name-card").eq(i).attr("data-card", num)
+      $(".name-card").eq(i).find(".card-front").css("background-image", `url(./images/front_name${num2}.png)`)
+      $(".name-card").eq(i).attr("data-bottomcard", num2)
 
       // 打散下排卡片順序
       const target = Math.round(Math.random() * 6)
       $(".name-card").eq(target).insertAfter($(".name-card").eq(i))
     }
+
+    // 上排翻牌
+    $("#top-cards").on("click", ".shape-card", function () {
+      // 最多翻開一張，且這張牌還沒翻開
+      if ($("#top-cards").find(".card-open").length < 1 && !$(this).hasClass("card-open")) {
+        $(this).addClass("card-open")
+      }
+
+      // 如果上下排都翻開一張了
+      if ($(".card-open").length === 2) {
+        // 如果這兩張的 data number 一樣
+        if ($("#top-cards").find(".card-open").attr("data-topcard") === $("#bottom-cards").find(".card-open").attr("data-bottomcard")) {
+          // 用 class 標記已完成
+          $(".card-open").addClass("card-ok")
+          // 將 .card-front 淡出，如果只對 .card-open 淡出會把 3D 壓平只看到卡背
+          $(".card-open .card-front").fadeTo(1500, 0)
+
+          setTimeout(() => {
+            $("#info").fadeIn(1000, $("#info").append(`
+            <img class="info" src="./images/shape_info${$("#top-cards").find(".card-open").attr("data-topcard")}.png">`))
+            $(".info").prevAll().fadeOut(1000)
+          })
+        }
+
+        // 不管是否一樣都將卡片翻回來
+        setTimeout(() => {
+          // 如果 .card-open 裡的 .card-front 透明度不是 1，把 .card-open 透明度設為 0
+          $(".card-open").each(function () {
+            if ($(this).find(".card-front").css("opacity") != 1) {
+              $(this).css("opacity", 0)
+            }
+          })
+
+          $(".card-open").removeClass("card-open")
+
+          if ($(".card-ok").length === 14) {
+            Swal.fire({
+              title: '★ 挑戰成功 ★',
+              text: '你解救了小紅人的性命！',
+              imageUrl: './images/success.png',
+              imageAlt: '雖然圖片無法載入，但你仍然是小紅人的英雄!',
+            })
+          }
+        }, 1500)
+      }
+    })
+
+    // 下排翻牌
+    $("#bottom-cards").on("click", ".name-card", function () {
+      // 最多翻開一張，且這張牌還沒翻開
+      if ($("#bottom-cards").find(".card-open").length < 1 && !$(this).hasClass("card-open")) {
+        $(this).addClass("card-open")
+      }
+
+      // 如果上下排都翻開一張了
+      if ($(".card-open").length === 2) {
+        // 如果這兩張的 data number 一樣
+        if ($("#top-cards").find(".card-open").attr("data-topcard") === $("#bottom-cards").find(".card-open").attr("data-bottomcard")) {
+          // 用 class 標記已完成
+          $(".card-open").addClass("card-ok")
+          // 將 .card-front 淡出，如果只對 .card-open 淡出會把 3D 壓平只看到卡背
+          $(".card-open .card-front").fadeTo(1500, 0)
+
+          setTimeout(() => {
+            $("#info").fadeIn(1000, $("#info").append(`
+            <img class="info" src="./images/shape_info${$("#bottom-cards").find(".card-open").attr("data-bottomcard")}.png">`))
+            $(".info").prevAll().fadeOut(1000)
+          })
+        }
+
+        // 不管是否一樣都將卡片翻回來
+        setTimeout(() => {
+          // 如果 .card-open 裡的 .card-front 透明度不是 1，把 .card-open 透明度設為 0
+          $(".card-open").each(function () {
+            if ($(this).find(".card-front").css("opacity") != 1) {
+              $(this).css("opacity", 0)
+            }
+          })
+
+          $(".card-open").removeClass("card-open")
+
+          if ($(".card-ok").length === 14) {
+            Swal.fire({
+              heightAuto: false,
+              title: '★ 挑戰成功 ★',
+              text: '你解救了小紅人的性命！',
+              imageUrl: './images/success.png',
+              imageAlt: '雖然圖片無法載入，但你仍然是小紅人的英雄!',
+            })
+          }
+        }, 1500)
+      }
+    })
   </script>
 </body>
 
