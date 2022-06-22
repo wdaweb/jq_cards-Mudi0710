@@ -73,7 +73,7 @@
       position: absolute;
       top: 6%;
       right: 9.4%;
-      animation: cloud 5s 3s linear infinite;
+      animation: cloud 5s .5s linear infinite;
     }
 
     @keyframes cloud {
@@ -106,25 +106,59 @@
       }
     }
 
-    /* 設定上方卡片區 */
-    #shape-cards {
+    /* 設定上下方卡片區 */
+    #top-cards,
+    #bottom-cards {
       width: 1600px;
       height: 240px;
-      background: blue;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    /* 設定下方卡片區 */
-    #name-cards {
-      width: 1600px;
-      height: 240px;
-      background: red;
+    .shape-card,
+    .name-card {
+      width: 180px;
+      height: 220px;
+      /* 設定子元素在 3D 空間內 */
+      transform-style: preserve-3d;
+      transition: transform 1s;
+    }
+
+    .front-shape,
+    .front-name {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      /* Y軸旋轉，因為原本 卡片正面 跟 卡片背面 的圖樣都是朝上，所以要讓「正面」「背面」背對背，這樣 3D 旋轉時才能都看到圖樣那一面 */
+      transform: rotateY(180deg);
+      /* 翻過來後隱藏另一面 */
+      backface-visibility: hidden;
+    }
+
+    .back-shape {
+      width: 100%;
+      height: 100%;
+      background-image: url('./images/back_shape.png');
+      position: absolute;
+      /* 翻過來後隱藏另一面 */
+      backface-visibility: hidden;
+    }
+
+    .back-name {
+      width: 100%;
+      height: 100%;
+      background-image: url('./images/back_name.png');
+      position: absolute;
+      /* 翻過來後隱藏另一面 */
+      backface-visibility: hidden;
     }
   </style>
 </head>
 
 <body>
   <div id="container">
-    <div id="shape-cards"></div>
+    <div id="top-cards"></div>
     <div id="info">
       <img src="./images/title.png" alt="title">
       <img class="sweat" src="./images/sweat.png" alt="sweat">
@@ -132,9 +166,54 @@
       <img class="cloud-right" src="./images/cloud-right.png" alt="cloud-right">
       <img class="messline" src="./images/messline.png" alt="messline">
     </div>
-    <div id="name-cards"></div>
+    <div id="bottom-cards"></div>
   </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js'></script>
+  <script>
+    // 產生上排 7 張卡片
+    for (let i = 0; i < 7; i++) {
+      $("#top-cards").append(`
+        <div class="shape-card">
+          <div class="front-shape"></div>
+          <div class="back-shape"></div>
+        </div>
+      `)
+    }
 
+    // 產生下排 7 張卡片
+    for (let i = 0; i < 7; i++) {
+      $("#bottom-cards").append(`
+        <div class="name-card">
+          <div class="front-name"></div>
+          <div class="back-name"></div>
+        </div>
+      `)
+    }
+
+    // 將上排卡片加入正面花色與打散順序
+    for (let i = 0; i < 7; i++) {
+      const num = i % 7 + 1
+      // 加入上排正面花色
+      $(".shape-card").eq(i).find(".front-shape").css("background-image", `url(./images/front_shape${num}.png)`)
+      $(".shape-card").eq(i).attr("data-card", num)
+
+      // 打散上排卡片順序
+      const target = Math.round(Math.random() * 6)
+      $(".shape-card").eq(target).insertAfter($(".shape-card").eq(i))
+    }
+
+    // 將下排卡片加入正面花色與打散順序
+    for (let i = 0; i < 7; i++) {
+      const num = i % 7 + 1
+      // 加入下排正面花色
+      $(".name-card").eq(i).find(".front-name").css("background-image", `url(./images/front_name${num}.png)`)
+      $(".name-card").eq(i).attr("data-card", num)
+
+      // 打散下排卡片順序
+      const target = Math.round(Math.random() * 6)
+      $(".name-card").eq(target).insertAfter($(".name-card").eq(i))
+    }
+  </script>
 </body>
 
 </html>
