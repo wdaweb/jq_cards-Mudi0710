@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet">
   <title>Squid Game</title>
   <style>
     /* 重置預設 */
@@ -12,6 +14,7 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Noto Sans TC', sans-serif;
     }
 
     /* 設定body長寬與背景圖 */
@@ -23,6 +26,7 @@
 
     /* 設定遊戲操作區 */
     #container {
+      z-index: 2;
       width: 1600px;
       height: 900px;
       position: absolute;
@@ -172,9 +176,190 @@
       backface-visibility: hidden;
     }
 
+    /* 設定背面 hover 效果 */
+    .back-shape:hover,
+    .back-name:hover {
+      cursor: pointer;
+      transition: .01s;
+      transform: scale(1.2);
+      filter:
+        drop-shadow(0 0 2.5px white) drop-shadow(0 0 5px white) drop-shadow(0 0 7.5px white) drop-shadow(0 0 10px white);
+    }
+
     /* 設定翻開卡片的變形樣式 */
     .card-open {
       transform: rotateY(180deg);
+    }
+
+    /* 設定 replay 樣式 */
+    .replay {
+      text-decoration: none;
+      color: red;
+      font-size: large;
+    }
+
+    /* 設定 replay hover 效果 */
+    .replay:hover {
+      background: skyblue;
+      color: white;
+    }
+
+    /* 設定 bubble1 樣式*/
+    .bubble1 {
+      z-index: 1;
+      width: 40px;
+      height: 40px;
+      opacity: 0.7;
+      position: absolute;
+      bottom: 0;
+      left: 5%;
+      animation: bubble1 8s linear infinite;
+    }
+
+    @keyframes bubble1 {
+      25% {
+        transform: translate(200%, -750%);
+      }
+
+      50% {
+        transform: translate(-0%, -1500%);
+      }
+
+      75% {
+        transform: translate(200%, -2250%);
+      }
+
+      100% {
+        transform: translate(0%, -3000%);
+      }
+    }
+
+    /* 設定 bubble2 樣式*/
+    .bubble2 {
+      z-index: 1;
+      width: 20px;
+      height: 20px;
+      opacity: 0.7;
+      position: absolute;
+      bottom: 0;
+      left: 20%;
+      animation: bubble2 8s 1s linear infinite;
+    }
+
+    @keyframes bubble2 {
+      20% {
+        transform: translate(-300%, -1000%);
+      }
+
+      40% {
+        transform: translate(0%, -2000%);
+      }
+
+      60% {
+        transform: translate(300%, -3000%);
+      }
+
+      80% {
+        transform: translate(0%, -4000%);
+      }
+
+      100% {
+        transform: translate(-300%, -5000%);
+      }
+    }
+
+    /* 設定 bubble3 樣式*/
+    .bubble3 {
+      z-index: 1;
+      width: 30px;
+      height: 30px;
+      opacity: 0.7;
+      position: absolute;
+      bottom: 0;
+      left: 45%;
+      animation: bubble3 8s 0.5s linear infinite;
+    }
+
+    @keyframes bubble3 {
+      25% {
+        transform: translate(200%, -1000%);
+      }
+
+      50% {
+        transform: translate(-0%, -2000%);
+      }
+
+      75% {
+        transform: translate(200%, -3000%);
+      }
+
+      100% {
+        transform: translate(0%, -4000%);
+      }
+    }
+
+    /* 設定 bubble4 樣式*/
+    .bubble4 {
+      z-index: 1;
+      width: 50px;
+      height: 50px;
+      opacity: 0.7;
+      position: absolute;
+      bottom: 0;
+      left: 67%;
+      animation: bubble4 8s .3s linear infinite;
+    }
+
+    @keyframes bubble4 {
+      20% {
+        transform: translate(-150%, -500%);
+      }
+
+      40% {
+        transform: translate(0%, -1000%);
+      }
+
+      60% {
+        transform: translate(150%, -1500%);
+      }
+
+      80% {
+        transform: translate(0%, -2000%);
+      }
+
+      100% {
+        transform: translate(-150%, -2500%);
+      }
+    }
+
+    /* 設定 bubble5 樣式*/
+    .bubble5 {
+      z-index: 1;
+      width: 35px;
+      height: 35px;
+      opacity: 0.7;
+      position: absolute;
+      bottom: 0;
+      left: 83%;
+      animation: bubble5 8s 0.5s linear infinite;
+    }
+
+    @keyframes bubble5 {
+      25% {
+        transform: translate(200%, -750%);
+      }
+
+      50% {
+        transform: translate(-0%, -1500%);
+      }
+
+      75% {
+        transform: translate(200%, -2250%);
+      }
+
+      100% {
+        transform: translate(0%, -3000%);
+      }
     }
   </style>
 </head>
@@ -184,13 +369,18 @@
     <div id="top-cards"></div>
     <div id="info">
       <img src="./images/title.png" alt="title">
-      <img sweat" src="./images/sweat.png" alt="sweat">
-      <img cloud-left" src="./images/cloud-left.png" alt="cloud-left">
-      <img cloud-right" src="./images/cloud-right.png" alt="cloud-right">
-      <img messline" src="./images/messline.png" alt="messline">
+      <img class="sweat" src="./images/sweat.png" alt="sweat">
+      <img class="cloud-left" src="./images/cloud-left.png" alt="cloud-left">
+      <img class="cloud-right" src="./images/cloud-right.png" alt="cloud-right">
+      <img class="messline" src="./images/messline.png" alt="messline">
     </div>
     <div id="bottom-cards"></div>
   </div>
+  <img class="bubble1" src="./images/bubble.png">
+  <img class="bubble2" src="./images/bubble.png">
+  <img class="bubble3" src="./images/bubble.png">
+  <img class="bubble4" src="./images/bubble.png">
+  <img class="bubble5" src="./images/bubble.png">
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js'></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
@@ -274,8 +464,11 @@
 
           if ($(".card-ok").length === 14) {
             Swal.fire({
+              heightAuto: false,
+              allowOutsideClick: false,
               title: '★ 挑戰成功 ★',
               text: '你解救了小紅人的性命！',
+              footer: '<a href="javascript:window.location.reload()" class="replay"> －－－－－> 我想再認識一次軟足類動物！ <－－－－－ </a>',
               imageUrl: './images/success.png',
               imageAlt: '雖然圖片無法載入，但你仍然是小紅人的英雄!',
             })
@@ -321,8 +514,10 @@
           if ($(".card-ok").length === 14) {
             Swal.fire({
               heightAuto: false,
+              allowOutsideClick: false,
               title: '★ 挑戰成功 ★',
               text: '你解救了小紅人的性命！',
+              footer: '<a href="javascript:window.location.reload()" class="replay"> －－－－－> 我想再認識一次軟足類動物！ <－－－－－ </a>',
               imageUrl: './images/success.png',
               imageAlt: '雖然圖片無法載入，但你仍然是小紅人的英雄!',
             })
