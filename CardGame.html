@@ -142,7 +142,7 @@
       height: 220px;
       /* 設定子元素在 3D 空間內 */
       transform-style: preserve-3d;
-      transition: transform 1s;
+      transition: transform .7s;
     }
 
     /* 設定上下排卡片正面樣式 */
@@ -442,7 +442,7 @@
           // 用 class 標記已完成
           $(".card-open").addClass("card-ok")
           // 將 .card-front 淡出，如果只對 .card-open 淡出會把 3D 壓平只看到卡背
-          $(".card-open .card-front").fadeTo(1500, 0)
+          $(".card-open .card-front").fadeTo(1000, 0)
 
           setTimeout(() => {
             $("#info").fadeIn(1000, $("#info").append(`
@@ -473,7 +473,7 @@
               imageAlt: '雖然圖片無法載入，但你仍然是小紅人的英雄!',
             })
           }
-        }, 1500)
+        }, 1000)
       }
     })
 
@@ -491,7 +491,7 @@
           // 用 class 標記已完成
           $(".card-open").addClass("card-ok")
           // 將 .card-front 淡出，如果只對 .card-open 淡出會把 3D 壓平只看到卡背
-          $(".card-open .card-front").fadeTo(1500, 0)
+          $(".card-open .card-front").fadeTo(1000, 0)
 
           setTimeout(() => {
             $("#info").fadeIn(1000, $("#info").append(`
@@ -522,7 +522,7 @@
               imageAlt: '雖然圖片無法載入，但你仍然是小紅人的英雄!',
             })
           }
-        }, 1500)
+        }, 1000)
       }
     })
   </script>
