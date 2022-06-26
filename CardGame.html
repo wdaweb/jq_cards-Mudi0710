@@ -160,7 +160,7 @@
     .back-shape {
       width: 100%;
       height: 100%;
-      background-image: url('./images/back_shape.png');
+      background: url('./images/back_shape.png') no-repeat center center/cover;
       position: absolute;
       /* 翻過來後隱藏另一面 */
       backface-visibility: hidden;
@@ -170,7 +170,7 @@
     .back-name {
       width: 100%;
       height: 100%;
-      background-image: url('./images/back_name.png');
+      background: url('./images/back_name.png') no-repeat center center/cover;
       position: absolute;
       /* 翻過來後隱藏另一面 */
       backface-visibility: hidden;
@@ -361,6 +361,49 @@
         transform: translate(0%, -3000%);
       }
     }
+
+    @media (max-width: 1700px) {
+      #container {
+        width: 1200px;
+        height: 675px;
+      }
+
+      #info,
+      .title,
+      .info {
+        width: 1200px;
+        height: 315px;
+      }
+
+      .cloud-left {
+        width: 158px;
+        height: 165px;
+      }
+
+      .cloud-right {
+        width: 158px;
+        height: 165px;
+        top: 4%;
+      }
+
+      #top-cards,
+      #bottom-cards {
+        width: 1200px;
+        height: 180px;
+      }
+
+      .card-front {
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+      }
+
+      .shape-card,
+      .name-card {
+        width: 146px;
+        height: 180px;
+      }
+    }
   </style>
 </head>
 
@@ -368,7 +411,7 @@
   <div id="container">
     <div id="top-cards"></div>
     <div id="info">
-      <img src="./images/title.png" alt="title">
+      <img class="title" src="./images/title.png" alt="title">
       <img class="sweat" src="./images/sweat.png" alt="sweat">
       <img class="cloud-left" src="./images/cloud-left.png" alt="cloud-left">
       <img class="cloud-right" src="./images/cloud-right.png" alt="cloud-right">
